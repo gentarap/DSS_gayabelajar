@@ -1,30 +1,33 @@
 <?php
 
-// Migration untuk update user_answers table
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+    /**
+     * Run the migrations.
+     */
     public function up(): void
     {
-        Schema::table('user_answers', function (Blueprint $table) {
-            // Tambah session_id untuk membedakan setiap sesi test
-            $table->string('session_id')->after('user_id');
-
-            // Tambah index untuk performa query
-            $table->index(['user_id', 'session_id']);
-            $table->index(['session_id']);
+        Schema::create('user_answers', function (Blueprint $table) {
+            $table->id('user_answer_id');
+            $table->foreignId('user_id')->constrained('users', 'user_id')->onDelete('cascade');
+            $table->foreignId('question_id')->constrained('questions', 'question_id')->onDelete('cascade');
+            $table->foreignId('answer_id')->constrained('answers', 'answer_id')->onDelete('cascade');
+            $table->tinyInteger('skor_visual')->default(0);
+            $table->tinyInteger('skor_auditory')->default(0);
+            $table->tinyInteger('skor_kinestetik')->default(0);
+            $table->timestamps();
         });
     }
 
+    /**
+     * Reverse the migrations.
+     */
     public function down(): void
     {
-        Schema::table('user_answers', function (Blueprint $table) {
-            $table->dropIndex(['user_id', 'session_id']);
-            $table->dropIndex(['session_id']);
-            $table->dropColumn('session_id');
-        });
+        Schema::dropIfExists('user_answers');
     }
 };
