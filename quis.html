@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Kuis Gaya Belajar</title>
+  <link rel="stylesheet" href="quis.css" />
+</head>
+<body>
+  <div class="container">
+    <div id="start-screen" class="text-center">
+      <button id="start-button" class="btn-get-started">Get Started</button>
+    </div>
+
+    <div id="quiz-container" class="quiz-card" style="display: none;">
+      <div id="question-text" class="question-text"></div>
+      <div id="answers-container" class="answers"></div>
+
+      <div class="navigation-buttons">
+        <button id="back-button">Back</button>
+        <button id="next-button">Next</button>
+        <button id="submit-button" style="display: none;">Submit</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="quis.js"></script>
+</body>
+</html>
