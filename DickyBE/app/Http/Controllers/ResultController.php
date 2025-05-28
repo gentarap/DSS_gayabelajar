@@ -49,7 +49,14 @@ class ResultController extends Controller
         return response()->json([
             'message' => 'Hasil disimpan',
             'result' => $style,
+
             'rekomendasi' => $styleData->rekomendasi,
         ]);
+    }
+
+    public function index()
+    {
+        $results = Result::all();
+        return response()->json($results);
     }
 }

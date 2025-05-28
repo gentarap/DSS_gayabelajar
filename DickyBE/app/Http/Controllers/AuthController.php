@@ -70,6 +70,9 @@ class AuthController extends Controller
                 ], 401);
             }
 
+            // token sanctum
+            $token = $user->createToken('auth_token')->plainTextToken;
+
             return response()->json([
                 'message' => 'Login berhasil',
                 'user_id' => $user->user_id, // Konsisten dengan primary key
