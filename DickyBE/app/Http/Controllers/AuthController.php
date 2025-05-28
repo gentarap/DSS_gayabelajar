@@ -76,7 +76,9 @@ class AuthController extends Controller
             return response()->json([
                 'message' => 'Login berhasil',
                 'user_id' => $user->user_id, // Konsisten dengan primary key
-                'user' => $user
+                'user' => $user,
+                'access_token' => $token,
+                'token_type' => 'Bearer'
             ]);
         } catch (ValidationException $e) {
             return response()->json([
