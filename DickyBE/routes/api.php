@@ -11,9 +11,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::apiResource('/questions', QuestionController::class);
-    Route::apiResource('/results', ResultController::class);
-    Route::apiResource('/user-answers', UserAnswerController::class);
+    Route::Resource('/questions', QuestionController::class);
+    Route::Resource('/results', ResultController::class);
+    Route::Resource('/user-answers', UserAnswerController::class);
 
     //logout 
     Route::post('/logout', [AuthController::class, 'logout']);
