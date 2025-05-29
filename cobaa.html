@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Kuis Gaya Belajar</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        padding: 20px;
+        max-width: 700px;
+        margin: auto;
+      }
+      .question {
+        margin-bottom: 20px;
+      }
+      .answer {
+        margin-left: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Kuis Gaya Belajar</h1>
+
+    <div id="loginSection">
+      <input type="text" id="name" placeholder="Nama" /><br /><br />
+      <input type="text" id="username" placeholder="Username" /><br /><br />
+      <input type="email" id="email" placeholder="Email" /><br /><br />
+      <input type="password" id="password" placeholder="Password" /><br /><br />
+      <button onclick="register()">Daftar</button>
+      <button onclick="login()">Login</button>
+    </div>
+
+    <div id="quizSection" style="display: none">
+      <form id="quizForm"></form>
+      <button onclick="submitAnswers()">Kirim Jawaban</button>
+    </div>
+
+    <p id="result" style="font-weight: bold; color: green"></p>
+
+    <script>
+      const API_URL = "http://localhost:8000/api";
+      let user_id = null;
+      let questions = [];
+
+      async function register() {
+        const name = document.getElementById("name").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        try {
+          const res = await fetch(`${API_URL}/register`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, name, email, password }),
+          });
+
+          const data = await res.json();
+
+          // Cek apakah response sukses atau error
+          if (res.ok) {
+            user_id = data.user_id;
+            alert("Registrasi berhasil!");
+            loadQuiz();
+          } else {
+            // Handle error response
+            if (data.errors) {
+              // Tampilkan error validation
+              let errorMessages = [];
+              for (let field in data.errors) {
+                errorMessages.push(
+                  `${field}: ${data.errors[field].join(", ")}`
+                );
+              }
+              alert(`Registrasi gagal:\n${errorMessages.join("\n")}`);
+            } else {
+              alert(`Registrasi gagal: ${data.message || "Terjadi kesalahan"}`);
+            }
+          }
+        } catch (error) {
+          console.error("Registration error:", error);
+          alert("Terjadi kesalahan saat registrasi. Silakan coba lagi.");
+        }
+      }
+
+      async function login() {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value;
+
+        try {
+          const res = await fetch(`${API_URL}/login`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok && data.user_id) {
+            user_id = data.user_id;
+            alert("Login berhasil!");
+            loadQuiz();
+          } else {
+            alert(
+              `Login gagal: ${data.message || "Email atau password salah"}`
+            );
+          }
+        } catch (error) {
+          console.error("Login error:", error);
+          alert("Terjadi kesalahan saat login. Silakan coba lagi.");
+        }
+      }
+
+      async function loadQuiz() {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("quizSection").style.display = "block";
+
+        const res = await fetch(`${API_URL}/questions`);
+        questions = await res.json();
+
+        // Debug: log data untuk melihat struktur
+        console.log("Questions data:", questions);
+
+        const form = document.getElementById("quizForm");
+        form.innerHTML = "";
+
+        questions.forEach((q, index) => {
+          const div = document.createElement("div");
+          div.className = "question";
+          div.innerHTML = `<strong>${index + 1}. ${
+            q.question_text
+          }</strong><br>`;
+
+          // Ubah dari q.answers menjadi sesuai dengan backend
+          q.answers.forEach((a) => {
+            div.innerHTML += `
+            <label class="answer">
+              <input type="radio" name="q${q.question_id}" value="${a.answer_id}|${a.learning_type}"> ${a.answer_type}
+            </label><br>`;
+          });
+          form.appendChild(div);
+        });
+      }
+
+      async function submitAnswers() {
+        const userAnswers = [];
+        let incomplete = false;
+
+        questions.forEach((q) => {
+          const selected = document.querySelector(
+            `input[name="q${q.question_id}"]:checked`
+          );
+          if (!selected) return (incomplete = true);
+
+          const [answer_id, learning_type] = selected.value.split("|");
+
+          // Ubah mapping sesuai dengan backend field names
+          userAnswers.push({
+            user_id,
+            question_id: q.question_id,
+            answer_id,
+            skor_visual: learning_type === "visual" ? 1 : 0,
+            skor_auditory: learning_type === "auditory" ? 1 : 0,
+            skor_kinestetik: learning_type === "kinesthetic" ? 1 : 0,
+          });
+        });
+
+        if (incomplete) return alert("Semua pertanyaan harus dijawab!");
+
+        await fetch(`${API_URL}/user-answers`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(userAnswers),
+        });
+
+        // Panggil endpoint yang benar untuk mendapatkan hasil
+        const resultRes = await fetch(`${API_URL}/results`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id }),
+        });
+        const resultData = await resultRes.json();
+
+        console.log("Result data:", resultData); // Debug
+
+        document.getElementById(
+          "result"
+        ).innerText = `Gaya belajar kamu adalah: ${resultData.result.toUpperCase()}\n\n${
+          resultData.rekomendasi
+        }`;
+      }
+    </script>
+  </body>
+</html>

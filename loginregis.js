@@ -36,12 +36,58 @@ $(document).ready(function () {
 console.log("JS terhubung");
 
 
-// ==================== LOGIN HANDLER ====================
+// // ==================== LOGIN HANDLER ====================
+// document.addEventListener("DOMContentLoaded", function () {
+//   const loginForm = document.getElementById("loginForm");
+//   if (loginForm) {
+//     loginForm.addEventListener("submit", 
+//     async function (e) {
+//       e.preventDefault();
+
+//       const email = document.getElementById("email").value;
+//       const password = document.getElementById("password").value;
+
+//       try {
+//         console.log("Login form submitted");
+//         const response = await makeSessionRequest(
+//           "http://127.0.0.1:8000/api/login",
+//           {
+//             method: "POST",
+//             body: JSON.stringify({ email, password }),
+//             credentials: "include",
+//           }
+//         );
+
+//         if (!response.ok) {
+          
+//           const data = await response.json();
+          
+//           throw new Error(data.message || "Login gagal");
+//         }
+
+//         const data = await response.json();
+//         alert("Login berhasil!");
+//         console.log("Login response:", data);
+
+//         // Simpan info user ke localStorage untuk kemudahan akses
+//         if (data.access_token) {
+//           localStorage.setItem("user", JSON.stringify({ access_token: data.access_token }));
+//         }
+
+//         // Redirect ke dashboard
+//         window.location.href = "/quis.html";
+//       } catch (error) {
+//         alert("Login gagal: " + error.message);
+//         console.error("Login error:", error);
+//       }
+//     });
+//   }
+// });
+
 document.addEventListener("DOMContentLoaded", function () {
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
-    loginForm.addEventListener("submit", 
-    async function (e) {
+    loginForm.addEventListener("submit", async function (e) {
       e.preventDefault();
 
       const email = document.getElementById("email").value;
@@ -59,9 +105,7 @@ document.addEventListener("DOMContentLoaded", function () {
         );
 
         if (!response.ok) {
-          
           const data = await response.json();
-          
           throw new Error(data.message || "Login gagal");
         }
 
@@ -69,12 +113,18 @@ document.addEventListener("DOMContentLoaded", function () {
         alert("Login berhasil!");
         console.log("Login response:", data);
 
-        // Simpan info user ke localStorage untuk kemudahan akses
-        if (data.access_token) {
-          localStorage.setItem("user", JSON.stringify(data.access_token));
+        // ✅ Simpan info lengkap user ke localStorage
+        if (data.access_token && data.user) {
+          localStorage.setItem("user", JSON.stringify({
+            id: data.user.user_id,  // perhatikan: user.user_id
+            username: data.user.username,
+            access_token: data.access_token
+          }));
+        } else {
+          throw new Error("Data login tidak lengkap (user atau token tidak ditemukan).");
         }
 
-        // Redirect ke dashboard
+        // Redirect ke halaman berikutnya
         window.location.href = "/quis.html";
       } catch (error) {
         alert("Login gagal: " + error.message);
