@@ -120,7 +120,8 @@ body {
   left: 50%;
   width: 30px;
   height: 4px;
-  background: #4285f4;
+  color: var(--contrast-color);
+  background: var(--accent-color);
   transform: translate(-50%, -50%);
 }
 .form-toggle:before {
@@ -182,12 +183,13 @@ body {
 }
 .form-group button {
   outline: none;
-  background: #4285f4;
+  color: var(--contrast-color);
+  background: var(--accent-color);
   width: 100%;
   border: 0;
   border-radius: 4px;
   padding: 12px 20px;
-  color: #ffffff;
+
   font-family: inherit;
   font-size: inherit;
   font-weight: 500;
@@ -196,8 +198,8 @@ body {
   cursor: pointer;
 }
 .two .form-group button {
-  background: #ffffff;
-  color: #4285f4;
+  color: var(--accent-color);
+  background: var(--contrast-color);
 }
 .form-group .form-remember {
   font-size: 12px;
@@ -236,7 +238,8 @@ body {
   position: absolute;
   top: 0;
   left: 95%;
-  background: #4285f4;
+  color: var(--contrast-color);
+  background: var(--accent-color);
   width: 100%;
   min-height: 100%;
   padding: 60px calc(10% + 60px) 60px 60px;
@@ -280,7 +283,7 @@ body {
 }
 .form-header h1 {
   padding: 4px 0;
-  color: #4285f4;
+  color: var(--heading-color);
   font-size: 24px;
   font-weight: 700;
   text-transform: uppercase;

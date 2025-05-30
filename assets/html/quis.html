@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Kuis Gaya Belajar</title>
+    <link rel="stylesheet" href="/assets/css/quis.css" />
+  </head>
+  <body>
+    <div id="quiz-section">
+      <div id="start-section">
+        <div id="instruction-container" style="margin-bottom: 20px">
+          <h2>INSTRUKSI PENGERJAAN SOAL</h2>
+          <h4>Tes Gaya Belajar (Visual, Auditori, Kinestetik)</h4>
+
+          <h4>Jumlah Soal:</h4>
+          <ul>
+            <li>
+              Terdapat <span class="highlight">20 soal</span> pilihan ganda
+            </li>
+            <li>
+              Setiap soal memiliki
+              <span class="highlight">2 pilihan jawaban (A/B)</span>
+            </li>
+          </ul>
+
+          <h4>Cara Menjawab:</h4>
+          <ul>
+            <li>Baca setiap pertanyaan dengan seksama</li>
+            <li>
+              Pilih <span class="highlight">satu jawaban (A atau B)</span> yang
+              paling menggambarkan kebiasaan/kecenderungan Anda
+            </li>
+          </ul>
+
+          <h4>Ketentuan:</h4>
+          <ul>
+            <li>
+              Tidak ada jawaban benar/salah - pilih yang paling sesuai dengan
+              diri Anda
+            </li>
+            <li>Jawab dengan jujur sesuai kebiasaan sehari-hari</li>
+            <li>
+              <span class="highlight">Harap mengisi semua soal</span> untuk
+              hasil akurat
+            </li>
+          </ul>
+          <h4>Navigasi:</h4>
+          <ul>
+            <li>
+              Gunakan tombol <span class="highlight">"Kembali"</span> untuk
+              merevisi jawaban sebelumnya
+            </li>
+            <li>
+              Tombol <span class="highlight">"Lanjut"</span> untuk berpindah ke
+              soal berikutnya
+            </li>
+            <li>
+              <span class="highlight">"Submit"</span> akan muncul di soal
+              terakhir untuk mengirim jawaban
+            </li>
+          </ul>
+
+          <h4>Hasil:</h4>
+          <ul>
+            <li>
+              Sistem akan menganalisis jawaban dan menampilkan:
+              <ul>
+                <li>Dominasi gaya belajar (Visual/Auditori/Kinestetik)</li>
+                <li>Skor masing-masing gaya</li>
+                <li>Rekomendasi belajar sesuai hasil</li>
+              </ul>
+            </li>
+          </ul>
+          <button id="start-button" class="">Mulai Kuis</button>
+          <button id="back-button-beranda" style="float: right">Kembali</button>
+        </div>
+      </div>
+      <div id="quiz-container" style="display: none">
+        <div id="question-text"></div>
+        <div id="answers-container"></div>
+
+        <!-- Flex container untuk tombol -->
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 70px;
+          "
+        >
+          <button id="back-button" style="display: none">Kembali</button>
+
+          <div>
+            <button id="next-button" style="display: none; margin-right: 10px">
+              Selanjutnya
+            </button>
+            <button id="back-button" style="display: none">Kembali</button>
+            <button id="submit-button" style="display: none">Selesai</button>
+          </div>
+        </div>
+      </div>
+      <div id="result-container" style="display: none; margin-top: 20px"></div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="/assets/js/quis.js"></script>
+  </body>
+</html>
