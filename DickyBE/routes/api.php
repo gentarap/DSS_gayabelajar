@@ -9,11 +9,13 @@ use Illuminate\Support\Facades\Route;
 // Auth routes
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
+Route::put('/user-answers/update', [UserAnswerController::class, 'updateAnswers']);
+Route::post('/results/calculate', [ResultController::class, 'calculateResult']);
 
 Route::middleware(['auth:sanctum'])->group(function () {
-    Route::Resource('/questions', QuestionController::class);
-    Route::Resource('/results', ResultController::class);
-    Route::Resource('/user-answers', UserAnswerController::class);
+    Route::apiResource('/questions', QuestionController::class);
+    Route::apiResource('/results', ResultController::class);
+    Route::apiResource('/user-answers', UserAnswerController::class);
 
     //logout 
     Route::post('/logout', [AuthController::class, 'logout']);

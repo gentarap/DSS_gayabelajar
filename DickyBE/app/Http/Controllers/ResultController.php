@@ -2,20 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Models\UserAnswer;
 use App\Models\Result;
 use App\Models\LearningStyle;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
-    public function store(Request $request)
+    public function calculateResult(Request $request)
     {
         $userId = $request->user_id;
 
-        $scores = DB::table('user_answers')
-            ->where('user_id', $userId)
+        $scores = UserAnswer::where('user_id', $userId)
             ->select(
                 DB::raw('SUM(skor_visual) as total_visual'),
                 DB::raw('SUM(skor_auditory) as total_auditory'),
@@ -23,40 +22,36 @@ class ResultController extends Controller
             )->first();
 
         $style = 'Visual';
-        $maxScore = $scores->total_visual;
+        $max = $scores->total_visual;
 
-        if ($scores->total_auditory > $maxScore) {
+        if ($scores->total_auditory > $max) {
             $style = 'Auditory';
-            $maxScore = $scores->total_auditory;
+            $max = $scores->total_auditory;
         }
 
-        if ($scores->total_kinestetik > $maxScore) {
+        if ($scores->total_kinestetik > $max) {
             $style = 'Kinestetik';
         }
 
         $styleData = LearningStyle::where('gaya_belajar', $style)->first();
 
-        $result = Result::updateOrCreate(
-            ['user_id' => $userId],
-            [
-                'style_id' => $styleData->style_id,
-                'total_skor_visual' => $scores->total_visual,
-                'total_skor_auditory' => $scores->total_auditory,
-                'total_skor_kinestetik' => $scores->total_kinestetik,
-            ]
-        );
+        $result = Result::create([
+            'user_id' => $userId,
+            'style_id' => $styleData->style_id,
+            'total_skor_visual' => $scores->total_visual,
+            'total_skor_auditory' => $scores->total_auditory,
+            'total_skor_kinestetik' => $scores->total_kinestetik,
+        ]);
 
         return response()->json([
-            'message' => 'Hasil disimpan',
+            'message' => 'Hasil disimpan sebagai riwayat',
             'result' => $style,
-
             'rekomendasi' => $styleData->rekomendasi,
         ]);
     }
 
     public function index()
     {
-        $results = Result::all();
-        return response()->json($results);
+        return Result::with('style')->get();
     }
 }
