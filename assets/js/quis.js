@@ -252,21 +252,82 @@ submitButton.addEventListener("click", async () => {
   const kinestetikPercent = ((skor.total_kinestetik / total) * 100).toFixed(1);
 
   resultContainer.innerHTML = `
-  <div class="result-card">
+  <div class="result-card themed-card">
     <h2>Hasil Gaya Belajar Kamu</h2>
-    <p><strong>Tipe Gaya Belajar:</strong> ${result.result}</p>
-    <p><strong>Skor:</strong></p>
-    <ul>
-      <li>Visual: ${visualPercent}%</li>
-      <li>Auditory: ${auditoryPercent}%</li>
-      <li>Kinestetik:  ${kinestetikPercent}%</li>
+    <p><strong>Tipe Gaya Belajar:</strong> <span class="highlight">${result.result}</span></p>
+    <ul class="score-list">
+      <li>Visual: <span class="highlight">${visualPercent}%</span></li>
+      <li>Auditory: <span class="highlight">${auditoryPercent}%</span></li>
+      <li>Kinestetik: <span class="highlight">${kinestetikPercent}%</span></li>
     </ul>
-    <p><strong>Rekomendasi:</strong><br>${result.rekomendasi}</p>
+    <p><strong>Rekomendasi:</strong><br><span class="recommendation">${result.rekomendasi}</span></p>
     <br>
-    <button id="back-to-home" style="padding: 10px 15px; margin-top: 10px;">Kembali ke Beranda</button>
+    <button id="back-to-home" class="home-button">Kembali ke Beranda</button>
   </div>
-  `;
+`;
 
+  // Tambahkan CSS agar sesuai dengan warna dan font dari root style kamu
+  const style = document.createElement("style");
+  style.innerHTML = `
+  .themed-card {
+    background-color: var(--surface-color);
+    border-radius: 16px;
+    padding: 25px 30px;
+    max-width: 520px;
+    margin: 30px auto;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+    font-family: var(--default-font);
+    color: var(--default-color);
+    text-align: center;
+  }
+
+  .themed-card h2 {
+    color: var(--heading-color);
+    font-family: var(--heading-font);
+    margin-bottom: 20px;
+  }
+
+  .highlight {
+    color: var(--accent-color);
+    font-weight: bold;
+  }
+
+  .score-list {
+    list-style: none;
+    padding: 0;
+    margin: 10px 0 20px;
+    text-align: left;
+  }
+
+  .score-list li {
+    font-size: 16px;
+    margin: 6px 0;
+  }
+
+  .recommendation {
+    display: inline-block;
+    margin-top: 10px;
+    font-style: italic;
+    color: var(--heading-color);
+  }
+
+  .home-button {
+    background-color: var(--accent-color);
+    color: var(--contrast-color);
+    border: none;
+    padding: 12px 20px;
+    font-size: 16px;
+    font-family: var(--nav-font);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+
+  .home-button:hover {
+    background-color: #1a6faf; /* alternatif dari var(--accent-color) saat hover */
+  }
+`;
+  document.head.appendChild(style);
   document.getElementById("back-to-home").addEventListener("click", () => {
     window.location.href = "../../index.html";
   });
