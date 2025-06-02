@@ -87,6 +87,14 @@ if (startButton) {
   });
 }
 
+function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}
+
+
 async function loadQuestions() {
   try {
     const user = getCurrentUser();
@@ -99,6 +107,7 @@ async function loadQuestions() {
     });
     const data = await response.json();
     questions = data;
+    shuffleArray(questions);
 
     window.answerScores = {};
     questions.forEach((q) => {
