@@ -94,7 +94,6 @@ function shuffleArray(array) {
   }
 }
 
-
 async function loadQuestions() {
   try {
     const user = getCurrentUser();

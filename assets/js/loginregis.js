@@ -1,38 +1,66 @@
-// // ==================== FORM TOGGLE HANDLER ====================
-// var panelOne = $(".form-panel.two").height(),
-//   panelTwo = $(".form-panel.two")[0].scrollHeight;
+// ==================== FORM TOGGLE HANDLER ====================
+var panelOne = $(".form-panel.two").height(),
+  panelTwo = $(".form-panel.two")[0].scrollHeight;
 
-// $(".form-panel.two")
-//   .not(".form-panel.two.active")
-//   .on("click", function (e) {
-//     e.preventDefault();
+$(".form-panel.two")
+  .not(".form-panel.two.active")
+  .on("click", function (e) {
+    e.preventDefault();
 
-//     $(".form-toggle").addClass("visible");
-//     $(".form-panel.one").addClass("hidden");
-//     $(".form-panel.two").addClass("active");
-//     $(".form").animate(
-//       {
-//         height: $(".form-panel.two")[0].scrollHeight,
-//       },
-//       200
-//     );
-//   });
+    $(".form-toggle").addClass("visible");
+    $(".form-panel.one").addClass("hidden");
+    $(".form-panel.two").addClass("active");
+    $(".form").animate(
+      {
+        height: $(".form-panel.two")[0].scrollHeight,
+      },
+      200
+    );
+  });
 
-// $(".form-toggle").on("click", function (e) {
-//   e.preventDefault();
-//   $(this).removeClass("visible");
-//   $(".form-panel.one").removeClass("hidden");
-//   $(".form-panel.two").removeClass("active");
-//   $(".form").animate(
-//     {
-//       height: $(".form-panel.two").height(),
-//     },
-//     200
-//   );
-// });
+$(".form-toggle").on("click", function (e) {
+  e.preventDefault();
+  $(this).removeClass("visible");
+  $(".form-panel.one").removeClass("hidden");
+  $(".form-panel.two").removeClass("active");
+  $(".form").animate(
+    {
+      height: $(".form-panel.one")[0].scrollHeight,
+    },
+    200
+  );
+});
+
+$("#showRegister").on("click", function (e) {
+  e.preventDefault();
+  $(".form-toggle").addClass("visible");
+  $(".form-panel.one").addClass("hidden");
+  $(".form-panel.two").addClass("active");
+  $(".form").animate(
+    {
+      height: $(".form-panel.two")[0].scrollHeight,
+    },
+    200
+  );
+});
+
+$("#showLogin").on("click", function (e) {
+  e.preventDefault();
+  $(".form-toggle").removeClass("visible");
+  $(".form-panel.one").removeClass("hidden");
+  $(".form-panel.two").removeClass("active");
+  $(".form").animate(
+    {
+      height: $(".form-panel.two").height(),
+    },
+    200
+  );
+});
 
 $(document).ready(function () {
   console.log("JS terhubung");
+  console.log("Register Button: ", document.getElementById("registerButton"));
+
   // ==================== LOGIN HANDLER ====================
   const loginForm = document.getElementById("loginForm");
   if (loginForm) {
@@ -97,71 +125,94 @@ $(document).ready(function () {
 
   // ==================== REGISTER HANDLER ====================
   console.log("Mengecek form register:", $("#registerForm").length);
-  $(document).on("submit", "#registerForm", async function (e) {
-    console.log(">> Event submit terdeteksi");
-    e.preventDefault();
+  document
+    .getElementById("registerButton")
+    .addEventListener("click", async function (e) {
+      e.preventDefault();
+      console.log("Tombol REGISTER ditekan");
 
-    const username = $("#username").val();
-    const name = $("#name").val();
-    const email = $("#registeremail").val();
-    const password = $("#registerpassword").val();
-    const cpassword = $("#cpassword").val();
+      const usernameInput = document.getElementById("username");
+      const nameInput = document.getElementById("name");
+      const passwordInput = document.getElementById("registerpassword");
+      const confirmPasswordInput = document.getElementById("cpassword");
+      const emailInput = document.getElementById("registeremail");
 
-    const payload = {
-      username,
-      name,
-      email,
-      password,
-    };
+      if (
+        !usernameInput ||
+        !nameInput ||
+        !passwordInput ||
+        !confirmPasswordInput ||
+        !emailInput
+      ) {
+        console.error("Salah satu elemen input tidak ditemukan!");
+        return;
+      }
 
-    console.log("Data JSON yang dikirim:", JSON.stringify(payload));
+      const username = usernameInput.value;
+      const name = nameInput.value;
+      const password = passwordInput.value;
+      const confirmPassword = confirmPasswordInput.value;
+      const email = emailInput.value;
 
-    if (password !== cpassword) {
-      Swal.fire({
-        icon: "warning",
-        title: "Password Tidak Sama",
-        text: "Password dan konfirmasi harus cocok.",
-      });
-      return;
-    }
+      if (password !== confirmPassword) {
+        alert("Password tidak sama!");
+        return;
+      }
 
-    try {
-      const response = await fetch("http://127.0.0.1:8000/api/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const payload = {
+        username: username,
+        name: name,
+        password: password,
+        email: email,
+      };
 
-      const data = await response.json();
-      console.log("Register response:", data);
-
-      if (response.ok) {
-        Swal.fire({
-          icon: "success",
-          title: "Registrasi Berhasil",
-          text: "Silakan login menggunakan akun Anda.",
-          timer: 2000,
-          showConfirmButton: false,
+      try {
+        const response = await fetch("http://127.0.0.1:8000/api/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
         });
 
-        $("#registerForm")[0].reset();
-        $(".form-toggle").click(); // Kembali ke login
-      } else {
+        const data = await response.json();
+        console.log("Register response:", data);
+
+        if (response.ok) {
+          Swal.fire({
+            icon: "success",
+            title: "Registrasi Berhasil",
+            text: "Silakan login menggunakan akun Anda.",
+            timer: 2000,
+            showConfirmButton: false,
+          }).then(() => {
+            // Kembali ke form login secara eksplisit
+            $(".form-toggle").removeClass("visible");
+            $(".form-panel.one").removeClass("hidden").show();
+            $(".form-panel.two").removeClass("active").hide();
+            $(".form").css("height", $(".form-panel.one")[0].scrollHeight);
+          });
+
+          // Reset form
+          usernameInput.value = "";
+          nameInput.value = "";
+          passwordInput.value = "";
+          confirmPasswordInput.value = "";
+          emailInput.value = "";
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Registrasi Gagal",
+            text: data.message || "Terjadi kesalahan saat registrasi.",
+          });
+        }
+      } catch (error) {
+        console.error("Error saat register:", error);
         Swal.fire({
           icon: "error",
-          title: "Registrasi Gagal",
-          text: data.message || JSON.stringify(data),
+          title: "Gagal Terhubung",
+          text: "Tidak dapat menghubungi server. Pastikan backend berjalan.",
         });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Terjadi Error",
-        text: error.message,
-      });
-      console.error("Register error:", error);
-    }
-  });
+    });
 });

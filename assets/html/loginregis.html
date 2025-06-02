@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
     <link rel="stylesheet" href="/assets/css/loginregis.css" />
-    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="/assets/css/main.css" />
   </head>
   <body>
     <!-- Form-->
@@ -36,13 +36,17 @@
               ><a class="form-recovery" href="#">Forgot Password?</a>
             </div>
             <div class="form-group">
-              <button onclick="handleLoginSuccess()" type="submit"">Log In</button>
+              <button type="submit">Log In</button>
             </div>
           </form>
+          <p class="form-switch">
+            Belum punya akun?
+            <a href="#" id="showRegister">Register</a>
+          </p>
         </div>
       </div>
 
-      <!-- <div class="form-panel two"> -->
+      <div class="form-panel two">
         <div class="form-header">
           <h1>Register Account</h1>
         </div>
@@ -89,17 +93,21 @@
               />
             </div>
             <div class="form-group">
-              <button type="submit">Register</button>
+              <button id="registerButton" type="submit">Register</button>
             </div>
           </form>
+          <p class="form-switch">
+            Sudah punya akun?
+            <a href="#" id="showLogin">Login</a>
+          </p>
         </div>
       </div>
     </div>
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- SweetAlert2 CDN -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="/assets/js/utils.js"></script>
     <script src="/assets/js/loginregis.js"></script>
-
   </body>
 </html>

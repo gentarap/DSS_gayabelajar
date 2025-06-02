@@ -278,6 +278,22 @@ body {
 .form-panel.two.active:after {
   opacity: 0;
 }
+.form-panel.one.hidden {
+  display: none;
+}
+
+.form-panel.two {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 10%;
+  /* semua properti kamu tetap di sini */
+}
+
+.form-panel.two.active {
+  display: block;
+}
+
 .form-header {
   margin: 0 0 40px;
 }
