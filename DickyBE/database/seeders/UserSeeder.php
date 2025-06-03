@@ -22,7 +22,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'), // password = 'password'
                 'role' => 'admin',
-                'api_token' => Str::random(60),
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -33,7 +32,6 @@ class UserSeeder extends Seeder
                 'email_verified_at' => now(),
                 'password' => Hash::make('password'), // password = 'password'
                 'role' => 'user',
-                'api_token' => Str::random(60),
                 'created_at' => now(),
                 'updated_at' => now(),
             ]

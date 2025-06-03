@@ -16,6 +16,6 @@ class Result extends Model
 
     public function style()
     {
-        return $this->belongsTo(LearningStyle::class, 'style_id');
+        return $this->belongsTo(LearningStyle::class, 'style_id', 'style_id');
     }
 }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id('answer_id');
             $table->foreignId('question_id')->constrained('questions', 'question_id')->onDelete('cascade');
-            $table->string('answer_type');
+            $table->string('answer_text');
             $table->enum('learning_type', ['visual', 'auditory', 'kinesthetic']);
             $table->timestamps();
         });

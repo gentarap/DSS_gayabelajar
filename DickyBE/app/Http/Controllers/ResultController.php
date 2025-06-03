@@ -10,48 +10,13 @@ use Illuminate\Support\Facades\DB;
 
 class ResultController extends Controller
 {
-    public function calculateResult(Request $request)
+    public function userHistory($userId)
     {
-        $userId = $request->user_id;
+        $results = Result::with('style')
+            ->where('user_id', $userId)
+            ->orderBy('created_at', 'desc')
+            ->get();
 
-        $scores = UserAnswer::where('user_id', $userId)
-            ->select(
-                DB::raw('SUM(skor_visual) as total_visual'),
-                DB::raw('SUM(skor_auditory) as total_auditory'),
-                DB::raw('SUM(skor_kinestetik) as total_kinestetik')
-            )->first();
-
-        $style = 'Visual';
-        $max = $scores->total_visual;
-
-        if ($scores->total_auditory > $max) {
-            $style = 'Auditory';
-            $max = $scores->total_auditory;
-        }
-
-        if ($scores->total_kinestetik > $max) {
-            $style = 'Kinestetik';
-        }
-
-        $styleData = LearningStyle::where('gaya_belajar', $style)->first();
-
-        $result = Result::create([
-            'user_id' => $userId,
-            'style_id' => $styleData->style_id,
-            'total_skor_visual' => $scores->total_visual,
-            'total_skor_auditory' => $scores->total_auditory,
-            'total_skor_kinestetik' => $scores->total_kinestetik,
-        ]);
-
-        return response()->json([
-            'message' => 'Hasil disimpan sebagai riwayat',
-            'result' => $style,
-            'rekomendasi' => $styleData->rekomendasi,
-        ]);
-    }
-
-    public function index()
-    {
-        return Result::with('style')->get();
+        return response()->json($results);
     }
 }

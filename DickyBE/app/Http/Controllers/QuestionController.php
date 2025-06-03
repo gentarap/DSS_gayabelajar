@@ -11,23 +11,26 @@ class QuestionController extends Controller
     public function index()
     {
         try {
-            // Debug: cek data questions
-            $questions = Question::with('answers')->get();
+            // Ambil semua pertanyaan beserta jawaban
+            $questions = Question::with(['answers' => function ($query) {
+                $query->inRandomOrder();
+            }])
+                ->inRandomOrder()
+                ->limit(20)
+                ->get();
 
-            // Debug: log atau dump data untuk melihat struktur
-            Log::info('Questions data:', $questions->toArray());
-
-            // Pastikan answers ter-load
-            foreach ($questions as $question) {
-                Log::info("Question {$question->question_id} has " . $question->answers->count() . " answers");
-            }
+            // Untuk setiap pertanyaan, acak juga jawaban dari pertanyaan tersebut
+            $questions->transform(function ($question) {
+                $question->answers = $question->answers->shuffle();
+                return $question;
+            });
 
             return response()->json($questions);
         } catch (\Exception $e) {
-            Log::error('Error in QuestionController: ' . $e->getMessage());
+            Log::error('Error in QuestionController@index: ' . $e->getMessage());
             return response()->json([
                 'error' => $e->getMessage(),
-                'message' => 'Failed to load questions'
+                'message' => 'Failed to load shuffled questions and answers'
             ], 500);
         }
     }

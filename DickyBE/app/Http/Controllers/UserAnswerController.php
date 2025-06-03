@@ -27,7 +27,7 @@ class UserAnswerController extends Controller
                 $skorAuditory = 0;
                 $skorKinestetik = 0;
 
-                if ($answerModel->answer_type === 'Setuju') {
+                if ($answerModel) {
                     if ($answerModel->learning_type === 'visual') $skorVisual = 1;
                     if ($answerModel->learning_type === 'auditory') $skorAuditory = 1;
                     if ($answerModel->learning_type === 'kinesthetic') $skorKinestetik = 1;
@@ -79,7 +79,12 @@ class UserAnswerController extends Controller
                 'message' => 'Jawaban dan hasil berhasil disimpan',
                 'result' => $style,
                 'rekomendasi' => $styleData->rekomendasi,
-                'skor' => $totals
+                'skor' => $totals,
+                'persentase' => [
+                    'visual' => number_format(($totals->total_visual / 20) * 100, 0) . '%', // bulatkan
+                    'auditory' => number_format(($totals->total_auditory / 20) * 100, 0) . '%',
+                    'kinestetik' => number_format(($totals->total_kinestetik / 20) * 100, 0) . '%',
+                ]
             ]);
         } catch (\Exception $e) {
             return response()->json([
