@@ -161,7 +161,7 @@ function renderQuestion() {
         ? "checked"
         : ""
     }>
-      <strong>${optionLabel}.</strong> ${answer.answer_type}
+      <strong>${optionLabel}.</strong> ${answer.answer_text}
     `;
 
     row.appendChild(label);
@@ -252,12 +252,10 @@ submitButton.addEventListener("click", async () => {
   quizContainer.style.display = "none";
   const resultContainer = document.getElementById("result-container");
   resultContainer.style.display = "block";
-  const skor = result.skor;
-  const total = skor.total_visual + skor.total_auditory + skor.total_kinestetik;
 
-  const visualPercent = ((skor.total_visual / total) * 100).toFixed(1);
-  const auditoryPercent = ((skor.total_auditory / total) * 100).toFixed(1);
-  const kinestetikPercent = ((skor.total_kinestetik / total) * 100).toFixed(1);
+  const visualPercent = result.persentase.visual;
+  const auditoryPercent = result.persentase.auditory;
+  const kinestetikPercent = result.persentase.kinestetik;
 
   resultContainer.innerHTML = `
   <div class="result-card themed-card">
