@@ -25,7 +25,7 @@ class ResetPasswordController extends Controller
                     'remember_token' => Str::random(60),
                 ])->save();
             }
-        );
+        ); 
 
         return $status === Password::RESET_LINK_SENT ? response()->json([
             'message' => __($status)
