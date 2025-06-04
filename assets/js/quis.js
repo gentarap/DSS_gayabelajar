@@ -262,9 +262,9 @@ submitButton.addEventListener("click", async () => {
     <h2>Hasil Gaya Belajar Kamu</h2>
     <p><strong>Tipe Gaya Belajar:</strong> <span class="highlight">${result.result}</span></p>
     <ul class="score-list">
-      <li>Visual: <span class="highlight">${visualPercent}%</span></li>
-      <li>Auditory: <span class="highlight">${auditoryPercent}%</span></li>
-      <li>Kinestetik: <span class="highlight">${kinestetikPercent}%</span></li>
+      <li>Visual: <span class="highlight">${visualPercent}</span></li>
+      <li>Auditory: <span class="highlight">${auditoryPercent}</span></li>
+      <li>Kinestetik: <span class="highlight">${kinestetikPercent}</span></li>
     </ul>
     <p><strong>Rekomendasi:</strong><br><span class="recommendation">${result.rekomendasi}</span></p>
     <br>

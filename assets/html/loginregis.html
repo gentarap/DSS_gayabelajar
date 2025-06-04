@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Login</title>
     <link rel="stylesheet" href="/assets/css/loginregis.css" />
     <link rel="stylesheet" href="/assets/css/main.css" />
   </head>
@@ -55,6 +55,10 @@
         <div class="form-content">
           <form id="registerForm">
             <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" id="name" name="name" required="required" />
+            </div>
+            <div class="form-group">
               <label for="username">Username</label>
               <input
                 type="text"
@@ -64,9 +68,15 @@
               />
             </div>
             <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" required="required" />
+              <label for="email">Email Address</label>
+              <input
+                type="email"
+                id="registeremail"
+                name="email"
+                required="required"
+              />
             </div>
+
             <div class="form-group">
               <label for="password">Password</label>
               <input
@@ -85,23 +95,11 @@
                 required="required"
               />
             </div>
-            <div class="form-group">
-              <label for="email">Email Address</label>
-              <input
-                type="email"
-                id="registeremail"
-                name="email"
-                required="required"
-              />
-            </div>
+
             <div class="form-group">
               <button id="registerButton" type="submit">Register</button>
             </div>
           </form>
-          <p class="form-switch">
-            Sudah punya akun?
-            <a href="#" id="showLogin">Login</a>
-          </p>
         </div>
       </div>
     </div>

@@ -15,6 +15,24 @@ document
     const password_confirmation =
       document.getElementById("confirmPassword").value;
 
+    if (!password || !password_confirmation) {
+      Swal.fire({
+        icon: "warning",
+        title: "Peringatan",
+        text: "Semua field harus diisi!",
+      });
+      return;
+    }
+
+    if (password !== password_confirmation) {
+      Swal.fire({
+        icon: "warning",
+        title: "Password Tidak Cocok",
+        text: "Password dan konfirmasi harus sama.",
+      });
+      return;
+    }
+
     try {
       const response = await fetch("http://127.0.0.1:8000/api/password/reset", {
         method: "POST",
@@ -31,26 +49,26 @@ document
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (!response.ok) {
         Swal.fire({
-          icon: "error",
-          title: "Gagal Reset Password",
-          text: "Terjadi kesalahan saat reset password.",
+          icon: "success",
+          title: "Password Diperbarui",
+          text: "Password berhasil diperbarui. Silakan login kembali.",
+        }).then(() => {
+          window.location.href = "/assets/html/loginregis.html";
         });
       } else {
         Swal.fire({
-          icon: "success",
-          title: "Password Berhasil Diubah",
-          text: "Password berhasil diperbarui. Silakan login kembali.",
-        }).then(() => {
-          window.location.href = "/assets/html/loginregis.html"; // Arahkan kembali ke login
+          icon: "error",
+          title: "Gagal Reset Password",
+          text: data.message || "Terjadi kesalahan saat reset password.",
         });
       }
     } catch (error) {
       console.error("Reset error:", error);
       Swal.fire({
         icon: "error",
-        title: "Kesalahan",
+        title: "Kesalahan Server",
         text: "Terjadi masalah saat menghubungi server.",
       });
     }

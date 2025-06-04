@@ -83,6 +83,11 @@ $(document).ready(function () {
 
         if (!response.ok) {
           const data = await response.json();
+
+          if (response.status === 401) {
+            throw new Error("Email atau password salah.");
+          }
+
           throw new Error(data.message || "Login gagal");
         }
 
@@ -116,7 +121,7 @@ $(document).ready(function () {
         Swal.fire({
           icon: "error",
           title: "Login Gagal",
-          text: error.message,
+          text: error.message || "Terjadi kesalahan saat login.",
         });
         console.error("Login error:", error);
       }
@@ -148,14 +153,29 @@ $(document).ready(function () {
         return;
       }
 
-      const username = usernameInput.value;
-      const name = nameInput.value;
+      const username = usernameInput.value.trim();
+      const name = nameInput.value.trim();
       const password = passwordInput.value;
       const confirmPassword = confirmPasswordInput.value;
-      const email = emailInput.value;
+      const email = emailInput.value.trim();
 
+      // Validasi semua input harus diisi
+      if (!username || !name || !password || !confirmPassword || !email) {
+        Swal.fire({
+          icon: "warning",
+          title: "Pendaftaran Gagal",
+          text: "Semua field harus diisi.",
+        });
+        return;
+      }
+
+      // Validasi password dan konfirmasi harus sama
       if (password !== confirmPassword) {
-        alert("Password tidak sama!");
+        Swal.fire({
+          icon: "warning",
+          title: "Password Tidak Cocok",
+          text: "Password dan konfirmasi password tidak sama.",
+        });
         return;
       }
 
@@ -186,7 +206,7 @@ $(document).ready(function () {
             timer: 2000,
             showConfirmButton: false,
           }).then(() => {
-            // Kembali ke form login secara eksplisit
+            // Kembali ke form login
             $(".form-toggle").removeClass("visible");
             $(".form-panel.one").removeClass("hidden").show();
             $(".form-panel.two").removeClass("active").hide();
