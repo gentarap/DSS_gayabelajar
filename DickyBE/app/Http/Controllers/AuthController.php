@@ -31,6 +31,9 @@ class AuthController extends Controller
                 'role' => 'user'
             ]);
 
+            // $token = $user->createToken('auth_token')->plainTextToken;
+            // \Mail::to($user)->send(new EmailVerification($user));
+
             // Debug: Log created user
             Log::info('User created', ['user_id' => $user->user_id]);
 
