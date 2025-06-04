@@ -238,7 +238,7 @@ button#submit-button:hover {
 }
 
 .result-card button#back-to-home {
-  background-color:  #e74c3c;
+  background-color: #e74c3c;
   color: var(--contrast-color);
   border: none;
   border-radius: 8px;
@@ -254,4 +254,80 @@ button#submit-button:hover {
 
 .result-card button#back-to-home:hover {
   background-color: #c0392b; /* warna lebih gelap dari accent */
+}
+
+@media (max-width: 768px) {
+  .result-card {
+    padding: 20px;
+    margin: 30px 16px;
+    font-size: 15px;
+  }
+
+  .result-card h2 {
+    font-size: 22px;
+    margin-bottom: 16px;
+  }
+
+  .result-card p,
+  .result-card ul li {
+    font-size: 15px;
+  }
+
+  .result-card button#back-to-home {
+    width: 100%;
+    font-size: 15px;
+    padding: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .result-card {
+    padding: 16px;
+    margin: 20px 12px;
+  }
+
+  .result-card h2 {
+    font-size: 20px;
+  }
+
+  .result-card p,
+  .result-card ul li {
+    font-size: 14px;
+  }
+
+  .result-card button#back-to-home {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
+@media screen and (max-width: 768px) {
+  #button-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  #start-button,
+  #next-button,
+  #back-button,
+  #back-button-beranda,
+  #submit-button,
+  #back-to-home {
+    width: 100%;
+    margin: 8px 0;
+    font-size: 15px;
+    padding: 10px 16px;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  #start-button,
+  #next-button,
+  #back-button,
+  #back-button-beranda,
+  #submit-button,
+  #back-to-home {
+    font-size: 14px;
+    padding: 8px 14px;
+  }
 }

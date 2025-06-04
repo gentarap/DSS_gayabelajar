@@ -332,6 +332,25 @@ submitButton.addEventListener("click", async () => {
   .home-button:hover {
     background-color: #1a6faf; /* alternatif dari var(--accent-color) saat hover */
   }
+
+  .quiz-navigation {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  /* Responsive untuk mobile */
+  @media (max-width: 600px) {
+    .quiz-navigation {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 15px;
+    }
+  
+    .quiz-navigation button {
+      width: 100%;
+    }
 `;
   document.head.appendChild(style);
   document.getElementById("back-to-home").addEventListener("click", () => {
