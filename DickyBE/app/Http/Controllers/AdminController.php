@@ -90,7 +90,7 @@ class AdminController extends Controller
     public function storeAnswer(Request $request, $questionId)
 {
     $validated = $request->validate([
-        'answer_type' => ['required', Rule::in(['setuju', 'tidak_setuju'])],
+        'answer_text' => ['required'],
         'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
     ]);
 
@@ -99,7 +99,7 @@ class AdminController extends Controller
         
         $answer = new Answer();
         $answer->question_id = $questionId;
-        $answer->answer_type = $validated['answer_type'];
+        $answer->answer_text = $validated['answer_text'];
         $answer->learning_type = $validated['learning_type'];
         $answer->save();
 
@@ -125,7 +125,7 @@ class AdminController extends Controller
     public function updateAnswer(Request $request, $questionId, $answerId)
 {
     $validated = $request->validate([
-        'answer_type' => ['required', Rule::in(['setuju', 'tidak_setuju'])],
+        'answer_text' => ['required'],
         'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
     ]);
 

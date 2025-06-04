@@ -27,22 +27,17 @@
         @csrf
 
         <div>
-            <label for="answer_type" class="block text-sm font-medium text-gray-700 mb-2">
+            <label for="answer_text" class="block text-sm font-medium text-gray-700 mb-2">
                 Answer Type <span class="text-red-500">*</span>
             </label>
-            <select name="answer_type" 
-                    id="answer_type" 
-                    class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 @error('answer_type') border-red-500 focus:ring-red-500 @enderror"
-                    required>
-                <option value="">Select Answer Type</option>
-                <option value="setuju" {{ old('answer_type') == 'setuju' ? 'selected' : '' }}>
-                    ✓ Setuju (Agree)
-                </option>
-                <option value="tidak_setuju" {{ old('answer_type') == 'tidak_setuju' ? 'selected' : '' }}>
-                    ✗ Tidak Setuju (Disagree)
-                </option>
-            </select>
-            @error('answer_type')
+            <input type="text" 
+       name="answer_text" 
+       id="answer_text" 
+       class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition duration-200 @error('answer_text') border-red-500 focus:ring-red-500 @enderror" 
+       value="{{ old('answer_text') }}"
+       placeholder="Tulis jawaban (misal: setuju atau tidak_setuju)"
+       required>
+            @error('answer_text')
                 <p class="text-red-500 text-sm mt-2 flex items-center">
                     <i class="fas fa-exclamation-circle mr-1"></i>
                     {{ $message }}
