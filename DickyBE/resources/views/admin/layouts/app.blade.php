@@ -1,26 +1,19 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-
-    <title>Admin Panel - {{ config('app.name', 'Laravel') }}</title>
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
-
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Optional: If you want to use Vite later, uncomment this -->
-    {{-- @vite(['resources/css/app.css', 'resources/js/app.js']) --}}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@yield('page-title') - Admin Panel</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    {{-- Anda bisa menambahkan link CSS khusus lainnya di sini jika diperlukan --}}
+    @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
 </head>
 <body class="font-sans antialiased bg-gray-100">
+
+    {{-- Container utama yang mengatur layout sidebar dan konten --}}
     <div class="min-h-screen flex">
-        <!-- Sidebar -->
-        <div class="w-64 bg-gray-800 text-white">
+        {{-- Sidebar Navigasi - Isi dari admin.partials.navigation --}}
+        <div class="w-64 bg-gray-800 text-white flex-shrink-0">
             <div class="p-4">
                 <h2 class="text-xl font-bold">Admin Panel</h2>
             </div>
@@ -53,9 +46,9 @@
             </nav>
         </div>
 
-        <!-- Main Content -->
-        <div class="flex-1">
-            <!-- Top Navigation -->
+        {{-- Area konten utama (header + main content) --}}
+        <div class="flex-1 flex flex-col overflow-hidden">
+            {{-- Header/Navbar - Isi dari admin.partials.navbar --}}
             <header class="bg-white shadow-sm border-b">
                 <div class="px-6 py-4">
                     <div class="flex justify-between items-center">
@@ -64,13 +57,15 @@
                         </h1>
                         
                         <div class="flex items-center space-x-4">
-                            <span class="text-gray-600">Welcome, {{ Auth::user()->name }}</span>
+                            @auth
+                                <span class="text-gray-600">Welcome, {{ Auth::user()->name }}</span>
+                            @endauth
                         </div>
                     </div>
                 </div>
             </header>
 
-            <!-- Flash Messages -->
+            {{-- Bagian untuk menampilkan Flash Messages --}}
             @if(session('success'))
                 <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 mx-6 mt-4 rounded" role="alert">
                     <span class="block sm:inline">{{ session('success') }}</span>
@@ -93,11 +88,14 @@
                 </div>
             @endif
 
-            <!-- Page Content -->
-            <main class="p-6">
+            {{-- Area konten utama tempat halaman akan di-inject --}}
+            <main class="flex-1 overflow-x-hidden overflow-y-auto p-6 bg-gray-200">
                 @yield('content')
             </main>
         </div>
     </div>
+
+    {{-- JavaScript files (termasuk Chart.js dan script kustom Anda) --}}
+    @stack('scripts')
 </body>
 </html>
