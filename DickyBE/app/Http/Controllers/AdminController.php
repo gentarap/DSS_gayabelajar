@@ -3,7 +3,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Question;
 use App\Models\Answer;
-use App\Models\User;
+use App\Models\User; // <-- Pastikan ini sudah diimpor
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
@@ -11,7 +11,10 @@ use App\Models\Result;
 use App\Models\LearningStyle;
 use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
-use ConsoleTVs\Charts\Classes\Chartjs\Chart; 
+use ConsoleTVs\Charts\Classes\Chartjs\Chart;
+use Illuminate\Support\Facades\Hash; // <-- Tambahkan ini untuk hashing password
+use Illuminate\Validation\ValidationException; // <-- Tambahkan ini untuk exception validasi
+
 class AdminController extends Controller
 {
      public function dashboard()
@@ -309,6 +312,124 @@ class AdminController extends Controller
         } catch (\Exception $e) {
             Log::error('Error deleting answer: ' . $e->getMessage());
             return back()->with('error', 'Failed to delete answer');
+        }
+    }
+
+    public function usersIndex()
+    {
+        // Ambil semua user, urutkan dari ID user terbaru ke terlama
+        // Kecualikan admin agar admin tidak bisa menghapus dirinya sendiri dengan mudah
+        $users = User::orderByDesc('user_id')->get();
+        return view('admin.users.index', compact('users'));
+    }
+
+    /**
+     * Menampilkan form untuk membuat user baru.
+     */
+    public function createUser()
+    {
+        return view('admin.users.create');
+    }
+
+    /**
+     * Menyimpan user baru ke database.
+     */
+    public function storeUser(Request $request)
+    {
+        try {
+            $validated = $request->validate([
+                'name' => 'required|string|max:255',
+                'username' => 'required|string|max:255|unique:users',
+                'email' => 'required|string|email|max:255|unique:users',
+                'password' => 'required|string|min:8|confirmed', // 'confirmed' akan mencari password_confirmation
+                'role' => ['required', Rule::in(['admin', 'user'])],
+            ]);
+
+            User::create([
+                'name' => $validated['name'],
+                'username' => $validated['username'],
+                'email' => $validated['email'],
+                'password' => Hash::make($validated['password']), // Hash password
+                'role' => $validated['role'],
+            ]);
+
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil ditambahkan.');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error creating user: ' . $e->getMessage());
+            return back()->with('error', 'Gagal menambahkan user. ' . $e->getMessage())->withInput();
+        }
+    }
+
+    /**
+     * Menampilkan form untuk mengedit user.
+     */
+    public function editUser($user_id)
+    {
+        $user = User::findOrFail($user_id);
+        return view('admin.users.edit', compact('user'));
+    }
+
+    /**
+     * Memperbarui detail user di database.
+     */
+    public function updateUser(Request $request, $user_id)
+    {
+        $user = User::findOrFail($user_id);
+
+        try {
+            $rules = [
+                'name' => 'required|string|max:255',
+                'username' => ['required', 'string', 'max:255', Rule::unique('users')->ignore($user->user_id, 'user_id')],
+                'email' => ['required', 'string', 'email', 'max:255', Rule::unique('users')->ignore($user->user_id, 'user_id')],
+                'role' => ['required', Rule::in(['admin', 'user'])],
+            ];
+
+            // Hanya validasi password jika ada input password baru
+            if ($request->filled('password')) {
+                $rules['password'] = 'nullable|string|min:8|confirmed';
+            }
+
+            $validated = $request->validate($rules);
+
+            $user->name = $validated['name'];
+            $user->username = $validated['username'];
+            $user->email = $validated['email'];
+            $user->role = $validated['role'];
+
+            if ($request->filled('password')) {
+                $user->password = Hash::make($validated['password']);
+            }
+
+            $user->save();
+
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil diperbarui.');
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error updating user ' . $user_id . ': ' . $e->getMessage());
+            return back()->with('error', 'Gagal memperbarui user. ' . $e->getMessage())->withInput();
+        }
+    }
+
+    /**
+     * Menghapus user dari database.
+     */
+    public function deleteUser($user_id)
+    {
+        // Pencegahan agar admin tidak menghapus dirinya sendiri
+        if (auth()->user()->user_id == $user_id) {
+            return back()->with('error', 'Anda tidak bisa menghapus akun Anda sendiri!');
+        }
+
+        try {
+            $user = User::findOrFail($user_id);
+            $user->delete();
+            return redirect()->route('admin.users.index')->with('success', 'User berhasil dihapus.');
+        } catch (\Exception $e) {
+            Log::error('Error deleting user ' . $user_id . ': ' . $e->getMessage());
+            return back()->with('error', 'Gagal menghapus user. ' . $e->getMessage());
         }
     }
 }

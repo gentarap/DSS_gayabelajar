@@ -23,12 +23,15 @@
                    class="block px-4 py-2 hover:bg-gray-700 {{ request()->routeIs('admin.dashboard') ? 'bg-gray-700' : '' }}">
                     Dashboard
                 </a>
-                
-                <a href="{{ route('admin.questions.index') }}" 
-                   class="block px-4 py-2 hover:bg-gray-700 {{ request()->routeIs('admin.questions.*') ? 'bg-gray-700' : '' }}">
-                    Questions Management
-                </a>
-                
+                <a href="{{ route('admin.questions.index') }}"
+    class="block px-4 py-2 hover:bg-gray-700 {{ request()->routeIs('admin.questions.*') ? 'bg-gray-700' : '' }}">
+    Questions Management
+</a>
+
+<a href="{{ route('admin.users.index') }}"
+    class="block px-4 py-2 hover:bg-gray-700 {{ request()->routeIs('admin.users.*') ? 'bg-gray-700' : '' }}">
+    User Management
+</a>
                 <div class="mt-8 pt-4 border-t border-gray-700">
                     <a href="{{ route('home') }}" 
                        class="block px-4 py-2 hover:bg-gray-700">
