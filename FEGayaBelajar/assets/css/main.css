@@ -2058,6 +2058,323 @@ section,
 /*--------------------------------------------------------------
 # Starter Section Section
 --------------------------------------------------------------*/
-.starter-section {
-  /* Add your styles here */
+
+.learning-body {
+  font-family: var(--default-font);
+  line-height: 1.6;
+  color: var(--default-color);
+  background-color: var(--background-color);
+}
+
+.learning-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Page Header */
+.learning-page-header {
+  text-align: center;
+  padding: 40px 0 60px;
+  background: var(--accent-color);
+  color: var(--contrast-color);
+  position: relative;
+}
+
+/* Header Separator */
+.learning-page-header::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1000px;
+  height: 4px;
+  background: linear-gradient(90deg, var(--accent-color), #2980b9);
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+}
+
+.learning-page-title {
+  font-family: var(--heading-font);
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  color: var(--contrast-color);
+}
+
+.learning-page-subtitle {
+  font-size: 1.2rem;
+  color: var(--contrast-color);
+  opacity: 0.8;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* Main Content */
+.learning-main-content {
+  padding: 60px 0;
+}
+
+.learning-section {
+  margin-bottom: 0px;
+}
+
+.learning-section-title {
+  font-family: var(--heading-font);
+  font-size: 2.2rem;
+  color: var(--heading-color);
+  margin-bottom: 30px;
+  position: relative;
+  padding-bottom: 15px;
+}
+
+.learning-section-title::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 60px;
+  height: 3px;
+  background: var(--accent-color);
+  border-radius: 2px;
+}
+
+/* Overview Section */
+.learning-overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+  margin-bottom: 40px;
+}
+
+.learning-overview-card {
+  background: var(--surface-color);
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #f0f4f8;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.learning-overview-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+}
+
+.learning-card-icon {
+  font-size: 2.5rem;
+  margin-bottom: 15px;
+  color: var(--accent-color);
+}
+
+.learning-card-title {
+  font-family: var(--heading-font);
+  font-size: 1.4rem;
+  color: var(--heading-color);
+  margin-bottom: 15px;
+}
+
+.learning-card-text {
+  line-height: 1.7;
+}
+
+/* Characteristics Section */
+.learning-characteristics-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.learning-characteristic-item {
+  background: var(--surface-color);
+  padding: 25px;
+  border-radius: 12px;
+  border-left: 4px solid var(--accent-color);
+  box-shadow: 0 3px 15px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.learning-characteristic-item:hover {
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  transform: translateX(5px);
+}
+
+.learning-characteristic-icon {
+  font-size: 1.8rem;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+
+.learning-characteristic-title {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 8px;
+}
+
+/* Learning Strategies */
+.learning-strategy-container {
+  background: linear-gradient(135deg, #f6fafd 0%, #e8f4f8 100%);
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+}
+
+.learning-strategy-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 30px;
+}
+
+.learning-strategy-card {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
+
+.learning-strategy-number {
+  background: var(--accent-color);
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.learning-strategy-title {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 10px;
+}
+
+/* Tools Section */
+.learning-tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.learning-tool-item {
+  background: var(--surface-color);
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  border: 2px solid transparent;
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.learning-tool-item:hover {
+  border-color: var(--accent-color);
+  transform: translateY(-3px);
+}
+
+.learning-tool-icon {
+  font-size: 2rem;
+  color: var(--accent-color);
+  margin-bottom: 10px;
+}
+
+.learning-tool-name {
+  font-weight: 600;
+  color: var(--heading-color);
+  margin-bottom: 5px;
+}
+
+.learning-tool-desc {
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* Tips Section */
+.learning-tips-container {
+  background: var(--accent-color);
+  color: white;
+  padding: 40px;
+  border-radius: 20px;
+  margin-bottom: 40px;
+}
+
+.learning-tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 25px;
+}
+
+.learning-tip-item {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 20px;
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+}
+
+.learning-tip-icon {
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+
+.learning-tip-title {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: white;
+}
+
+/* Navigation */
+.learning-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--accent-color);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  margin-top: 40px;
+}
+
+.learning-back-btn:hover {
+  background: var(--heading-color);
+  transform: translateX(-5px);
+}
+
+/* Navigation Center */
+.learning-nav-center {
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .learning-page-title {
+      font-size: 2.2rem;
+  }
+
+  .learning-section-title {
+      font-size: 1.8rem;
+  }
+
+  .learning-page-header {
+      padding: 30px 0 40px;
+  }
+
+  .learning-main-content {
+      padding: 40px 0;
+  }
+
+  .learning-strategy-container,
+  .learning-tips-container {
+      padding: 25px;
+      border-radius: 15px;
+  }
+
+  .learning-page-header::after {
+      width: 80px;
+      height: 3px;
+  }
 }
