@@ -11,7 +11,6 @@ class QuestionController extends Controller
     public function index()
     {
         try {
-            // Ambil semua pertanyaan beserta jawaban
             $questions = Question::with(['answers' => function ($query) {
                 $query->inRandomOrder();
             }])
@@ -20,7 +19,6 @@ class QuestionController extends Controller
                 ->limit(10)
                 ->get();
 
-            // Untuk setiap pertanyaan, acak juga jawaban dari pertanyaan tersebut
             $questions->transform(function ($question) {
                 $question->answers = $question->answers->shuffle();
                 return $question;

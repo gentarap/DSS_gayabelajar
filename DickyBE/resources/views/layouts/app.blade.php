@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
+    <title>{{ config('app.name', 'Studyfy') }}</title>
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.bunny.net">
@@ -28,7 +28,7 @@
                     <div class="flex items-center">
                         <!-- Logo -->
                         <a href="{{ route('home') }}" class="flex-shrink-0">
-                            <h1 class="text-xl font-bold text-gray-800">{{ config('app.name', 'Laravel') }}</h1>
+                            <h1 class="text-xl font-bold text-gray-800">{{ config('app.name', 'Studyfy') }}</h1>
                         </a>
                     </div>
 
