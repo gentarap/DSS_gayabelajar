@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,6 +8,7 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 </head>
+
 <body class="bg-gradient-to-br from-blue-50 via-white to-indigo-50 min-h-screen">
     <!-- Navigation -->
     <nav class="bg-white shadow-lg border-b border-gray-200">
@@ -25,35 +27,31 @@
                 <!-- Navigation Links -->
                 <div class="flex items-center space-x-4">
                     @auth
-                        <div class="flex items-center space-x-4">
-                            <span class="text-gray-700">Welcome, {{ Auth::user()->name }}!</span>
-                            
-                            @if(Auth::user()->is_admin)
-                                <a href="{{ route('admin.dashboard') }}" 
-                                   class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
-                                    <i class="fas fa-tachometer-alt mr-2"></i>Admin Dashboard
-                                </a>
-                            @endif
-                            
-                            <form method="POST" action="{{ route('logout') }}" class="inline">
-                                @csrf
-                                <button type="submit" 
-                                        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">
-                                    <i class="fas fa-sign-out-alt mr-2"></i>Logout
-                                </button>
-                            </form>
-                        </div>
+                    <div class="flex items-center space-x-4">
+                        <span class="text-gray-700">Welcome, {{ Auth::user()->name }}!</span>
+
+                        @if(Auth::user()->is_admin)
+                        <a href="{{ route('admin.dashboard') }}"
+                            class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
+                            <i class="fas fa-tachometer-alt mr-2"></i>Admin Dashboard
+                        </a>
+                        @endif
+
+                        <form method="POST" action="{{ route('logout') }}" class="inline">
+                            @csrf
+                            <button type="submit"
+                                class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition duration-200">
+                                <i class="fas fa-sign-out-alt mr-2"></i>Logout
+                            </button>
+                        </form>
+                    </div>
                     @else
-                        <div class="flex items-center space-x-3">
-                            <a href="{{ route('login') }}" 
-                               class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-200">
-                                <i class="fas fa-sign-in-alt mr-1"></i>Login
-                            </a>
-                            <a href="{{ route('register') }}" 
-                               class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700 transition duration-200">
-                                <i class="fas fa-user-plus mr-1"></i>Register
-                            </a>
-                        </div>
+                    <div class="flex items-center space-x-3">
+                        <a href="{{ route('login') }}"
+                            class="text-indigo-600 hover:text-indigo-800 font-medium transition duration-200">
+                            <i class="fas fa-sign-in-alt mr-1"></i>Login
+                        </a>
+                    </div>
                     @endauth
                 </div>
             </div>
@@ -65,39 +63,35 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
             <div class="text-center">
                 <h1 class="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
-                    Welcome to 
+                    Welcome to
                     <span class="text-indigo-600">Quiz Platform</span>
                 </h1>
                 <p class="text-xl text-gray-600 mb-8 max-w-3xl mx-auto">
-                    Test your knowledge, challenge yourself, and learn something new every day. 
+                    Test your knowledge, challenge yourself, and learn something new every day.
                     Join our community of learners and start your quiz journey today!
                 </p>
 
                 @guest
-                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
-                        <a href="{{ route('register') }}" 
-                           class="bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-700 transform hover:scale-105 transition duration-200 shadow-lg">
-                            <i class="fas fa-rocket mr-2"></i>Get Started
-                        </a>
-                        <a href="{{ route('login') }}" 
-                           class="border-2 border-indigo-600 text-indigo-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 hover:text-white transition duration-200">
-                            <i class="fas fa-sign-in-alt mr-2"></i>Sign In
-                        </a>
-                    </div>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="{{ route('login') }}"
+                        class="border-2 border-indigo-600 text-indigo-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-600 hover:text-white transition duration-200">
+                        <i class="fas fa-sign-in-alt mr-2"></i>Sign In
+                    </a>
+                </div>
                 @else
-                    <div class="flex justify-center">
-                        @if(Auth::user()->is_admin)
-                            <a href="{{ route('admin.dashboard') }}" 
-                               class="bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-700 transform hover:scale-105 transition duration-200 shadow-lg">
-                                <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
-                            </a>
-                        @else
-                            <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-xl">
-                                <i class="fas fa-check-circle mr-2"></i>
-                                You're logged in! Explore the available features.
-                            </div>
-                        @endif
+                <div class="flex justify-center">
+                    @if(Auth::user()->is_admin)
+                    <a href="{{ route('admin.dashboard') }}"
+                        class="bg-indigo-600 text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-indigo-700 transform hover:scale-105 transition duration-200 shadow-lg">
+                        <i class="fas fa-tachometer-alt mr-2"></i>Go to Dashboard
+                    </a>
+                    @else
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-6 py-4 rounded-xl">
+                        <i class="fas fa-check-circle mr-2"></i>
+                        You're logged in! Explore the available features.
                     </div>
+                    @endif
+                </div>
                 @endguest
             </div>
         </div>
@@ -170,12 +164,8 @@
                 Join thousands of learners who have already started their quiz journey with us.
             </p>
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="{{ route('register') }}" 
-                   class="bg-white text-indigo-600 px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transform hover:scale-105 transition duration-200 shadow-lg">
-                    <i class="fas fa-user-plus mr-2"></i>Create Account
-                </a>
-                <a href="{{ route('login') }}" 
-                   class="border-2 border-white text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-200">
+                <a href="{{ route('login') }}"
+                    class="border-2 border-white text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-white hover:text-indigo-600 transition duration-200">
                     <i class="fas fa-sign-in-alt mr-2"></i>Sign In Now
                 </a>
             </div>
@@ -220,25 +210,32 @@
             0% {
                 transform: translate(0px, 0px) scale(1);
             }
+
             33% {
                 transform: translate(30px, -50px) scale(1.1);
             }
+
             66% {
                 transform: translate(-20px, 20px) scale(0.9);
             }
+
             100% {
                 transform: translate(0px, 0px) scale(1);
             }
         }
+
         .animate-blob {
             animation: blob 7s infinite;
         }
+
         .animation-delay-2000 {
             animation-delay: 2s;
         }
+
         .animation-delay-4000 {
             animation-delay: 4s;
         }
     </style>
 </body>
+
 </html>

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\Question;
@@ -16,10 +17,29 @@ class AdminController extends Controller
     }
 
     // Questions CRUD
-    public function questionsIndex()
+    public function questionsIndex(Request $request)
     {
-        $questions = Question::with('answers')->get();
-        return view('admin.questions.index', compact('questions'));
+        // Ambil parameter sort dan direction dari query string, defaultnya:
+        $sort = $request->query('sort', 'question_id'); // default sort by id
+        $direction = $request->query('direction', 'asc'); // default ascending
+
+        // Validasi input parameter supaya hanya bisa sorting yang diijinkan
+        $allowedSorts = ['question_id', 'question_text', 'status', 'updated_at', 'created_at'];
+        $allowedDirections = ['asc', 'desc'];
+
+        if (!in_array($sort, $allowedSorts)) {
+            $sort = 'question_id';
+        }
+
+        if (!in_array($direction, $allowedDirections)) {
+            $direction = 'asc';
+        }
+
+        // Query dengan sorting dinamis
+        $questions = Question::with('answers')
+            ->orderBy($sort, $direction)
+            ->get();
+        return view('admin.questions.index', compact('questions', 'sort', 'direction'));
     }
 
     public function createQuestion()
@@ -54,6 +74,7 @@ class AdminController extends Controller
 
         $validated = $request->validate([
             'question_text' => 'required|string|max:1000',
+            'status' => ['required', Rule::in(['active', 'inactive'])],
         ]);
 
         try {
@@ -68,7 +89,7 @@ class AdminController extends Controller
     public function deleteQuestion($id)
     {
         $question = Question::findOrFail($id);
-        
+
         try {
             // Delete related answers first
             $question->answers()->delete();
@@ -88,31 +109,30 @@ class AdminController extends Controller
     }
 
     public function storeAnswer(Request $request, $questionId)
-{
-    $validated = $request->validate([
-        'answer_text' => ['required'],
-        'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
-    ]);
+    {
+        $validated = $request->validate([
+            'answer_text' => ['required'],
+            'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
+        ]);
 
-    try {
-        $question = Question::findOrFail($questionId);
-        
-        $answer = new Answer();
-        $answer->question_id = $questionId;
-        $answer->answer_text = $validated['answer_text'];
-        $answer->learning_type = $validated['learning_type'];
-        $answer->save();
+        try {
+            $question = Question::findOrFail($questionId);
 
-        return redirect()->route('admin.questions.index')
-               ->with('success', 'Answer added successfully');
-               
-    } catch (\Exception $e) {
-        Log::error('Error creating answer: ' . $e->getMessage());
-        return back()
-              ->withInput()
-              ->with('error', 'Failed to add answer: ' . $e->getMessage());
+            $answer = new Answer();
+            $answer->question_id = $questionId;
+            $answer->answer_text = $validated['answer_text'];
+            $answer->learning_type = $validated['learning_type'];
+            $answer->save();
+
+            return redirect()->route('admin.questions.index')
+                ->with('success', 'Answer added successfully');
+        } catch (\Exception $e) {
+            Log::error('Error creating answer: ' . $e->getMessage());
+            return back()
+                ->withInput()
+                ->with('error', 'Failed to add answer: ' . $e->getMessage());
+        }
     }
-}
 
 
     public function editAnswer($questionId, $answerId)
@@ -123,21 +143,21 @@ class AdminController extends Controller
     }
 
     public function updateAnswer(Request $request, $questionId, $answerId)
-{
-    $validated = $request->validate([
-        'answer_text' => ['required'],
-        'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
-    ]);
+    {
+        $validated = $request->validate([
+            'answer_text' => ['required'],
+            'learning_type' => ['required', Rule::in(['visual', 'auditory', 'kinesthetic'])],
+        ]);
 
-    try {
-        $answer = Answer::findOrFail($answerId);
-        $answer->update($validated);
-        return redirect()->route('admin.questions.index')->with('success', 'Answer updated successfully');
-    } catch (\Exception $e) {
-        Log::error('Error updating answer: ' . $e->getMessage());
-        return back()->with('error', 'Failed to update answer');
+        try {
+            $answer = Answer::findOrFail($answerId);
+            $answer->update($validated);
+            return redirect()->route('admin.questions.index')->with('success', 'Answer updated successfully');
+        } catch (\Exception $e) {
+            Log::error('Error updating answer: ' . $e->getMessage());
+            return back()->with('error', 'Failed to update answer');
+        }
     }
-}
 
     public function deleteAnswer($questionId, $answerId)
     {

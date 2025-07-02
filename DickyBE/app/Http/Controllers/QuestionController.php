@@ -15,8 +15,9 @@ class QuestionController extends Controller
             $questions = Question::with(['answers' => function ($query) {
                 $query->inRandomOrder();
             }])
+                ->where('status', 'active')
                 ->inRandomOrder()
-                ->limit(20)
+                ->limit(10)
                 ->get();
 
             // Untuk setiap pertanyaan, acak juga jawaban dari pertanyaan tersebut

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('questions', function (Blueprint $table) {
             $table->id('question_id')->autoIncrement()->unique();
             $table->text('question_text');
+            $table->string('status')->default('active');
             $table->timestamps();
         });
     }

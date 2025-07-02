@@ -22,24 +22,24 @@ Route::get('/', function () {
 
 // Authentication Routes
 Route::prefix('auth')->group(function () {
-    // Register routes
-    Route::get('/register', [AuthControllerAdmin::class, 'showRegisterForm'])->name('register');
-    Route::post('/register', [AuthControllerAdmin::class, 'register'])->name('register.store');
-    
+
     // Login routes
     Route::get('/login', [AuthControllerAdmin::class, 'showLoginForm'])->name('login');
     Route::post('/login', [AuthControllerAdmin::class, 'login'])->name('login.store');
-    
+
     // Logout route
     Route::post('/logout', [AuthControllerAdmin::class, 'logout'])->name('logout');
 });
 
 // Admin Routes - Protected by auth and admin middleware
 Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(function () {
-    
+    // Register routes
+    Route::get('/register', [AuthControllerAdmin::class, 'showRegisterForm'])->name('register');
+    Route::post('/register', [AuthControllerAdmin::class, 'register'])->name('register.store');
+
     // Admin Dashboard
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    
+
     // Questions Management
     Route::prefix('questions')->name('questions.')->group(function () {
         Route::get('/', [AdminController::class, 'questionsIndex'])->name('index');
@@ -48,7 +48,7 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->name('admin.')->group(fun
         Route::get('/{id}/edit', [AdminController::class, 'editQuestion'])->name('edit');
         Route::put('/{id}', [AdminController::class, 'updateQuestion'])->name('update');
         Route::delete('/{id}', [AdminController::class, 'deleteQuestion'])->name('delete');
-        
+
         // Answers Management (nested under questions)
         Route::prefix('{questionId}/answers')->name('answers.')->group(function () {
             Route::get('/create', [AdminController::class, 'createAnswer'])->name('create');
